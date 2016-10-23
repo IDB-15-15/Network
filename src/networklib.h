@@ -2,7 +2,24 @@
 #define NETWORKLIB_H
 
 #include <iostream>
-class Network_res;
-Network_res get(std::string site);
+#include <memory>
+class NetworkRes{
+    int error=0;
+    int mode=0;
+    std::string res;
+  public:
+    inline int get_error();
+    inline void set_error(int err);
+    inline int get_mode();
+    inline void set_mode(int mod);
+    inline std::string get_res();
+    inline void push(std::string value);
+};
+
+#include "networklibfoo.h"
+
+
+
+std::shared_ptr<NetworkRes> get(std::string site);
 
 #endif // NETWORKLIB_H

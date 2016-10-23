@@ -1,22 +1,14 @@
 #include "networklib.h"
 #include <iostream>
 #include <boost/asio.hpp>
+#include <memory>
 
 const std::string browser_name="Suppa Browser";
 const std::string platform="Linux";
 const std::string shifr="N";
 
 
-class Network_res{
-    int error=0;
-  public:
-    int get_error(){
-        return error;
-    }
-    void set_error(int err){
-        error=err;
-    }
-};
+
 
 std::string http(std::string host, std::string page, bool* err){
     using namespace boost::asio;
@@ -46,14 +38,14 @@ std::string http(std::string host, std::string page, bool* err){
     else {*err=true; return ec.message();} //Здесь надо будет возвращать код ошибки
 }
 
-Network_res get(std::string site){
+std::shared_ptr<NetworRes> get(std::string site){
     using namespace std;
 
     string str_http="HTTP://";
     string str_https="HTTPS://";
     string page="";
 
-    Network_res result;                        //Возвращаемый экземпляр класса
+    NetworkRes result;                        //Возвращаемый экземпляр класса
 
     bool right=true;
     bool err=false;
@@ -71,8 +63,21 @@ Network_res get(std::string site){
             int pl = (int)sl;
             site.erase(pl,site.length());
             string res=http(site, page, &err);
+            result.set_mode(1);
+            result.push(res);
+
         }
+//    if (site.find(str_https)!=site.npos){       //Работа по HTTP
+//            site.erase(0,8);
+//            std::string::size_type sl = site.find('/');
+//            page=site.substr(sl);
+//            int pl = (int)sl;
+//            site.erase(pl,site.length());
+//            string res=http(site, page, &err);
+//            result.set_mode(1);
+//            result.push(res);
 
-
+//        }
+    return std::make_shared<NetworkRes>(result);
 
 }

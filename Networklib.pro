@@ -9,4 +9,5 @@ CONFIG += staticlib
 
 SOURCES = "src/networklib.cpp"
 
-HEADERS = "src/networklib.h"
+HEADERS = "src/networklib.h" \
+    src/networklibfoo.h
