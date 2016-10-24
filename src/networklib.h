@@ -8,6 +8,7 @@ class NetworkRes{
     int mode=0;
     std::string res;
   public:
+    inline NetworkRes & operator=(const NetworkRes &some)=default;
     inline int get_error();
     inline void set_error(int err);
     inline int get_mode();
@@ -20,6 +21,6 @@ class NetworkRes{
 
 
 
-std::shared_ptr<NetworkRes> get(std::string site);
+NetworkRes get(std::string site);
 
 #endif // NETWORKLIB_H

@@ -38,7 +38,7 @@ std::string http(std::string host, std::string page, bool* err){
     else {*err=true; return ec.message();} //Здесь надо будет возвращать код ошибки
 }
 
-std::shared_ptr<NetworRes> get(std::string site){
+NetworkRes get(std::string site){
     using namespace std;
 
     string str_http="HTTP://";
@@ -49,14 +49,17 @@ std::shared_ptr<NetworRes> get(std::string site){
 
     bool right=true;
     bool err=false;
-    for (int i=8; i<site.length(); i++){       //Проверяем на наличие адреса страницы
+    for (int i=8; i<site.length(); i++)
+    {                                         //Проверяем на наличие адреса страницы
             if (site[i]=='/') right=false;
-        }
-    if (right){                                //И добавляем, если надо
+    }
+    if (right)
+    {                                //И добавляем, если надо
             page="/";
     }
 
-    if (site.find(str_http)!=site.npos){       //Работа по HTTP
+    if (site.find(str_http)!=site.npos)       //Работа по HTTP
+    {
             site.erase(0,7);
             std::string::size_type sl = site.find('/');
             page=site.substr(sl);
@@ -66,7 +69,7 @@ std::shared_ptr<NetworRes> get(std::string site){
             result.set_mode(1);
             result.push(res);
 
-        }
+    }
 //    if (site.find(str_https)!=site.npos){       //Работа по HTTP
 //            site.erase(0,8);
 //            std::string::size_type sl = site.find('/');
@@ -78,6 +81,6 @@ std::shared_ptr<NetworRes> get(std::string site){
 //            result.push(res);
 
 //        }
-    return std::make_shared<NetworkRes>(result);
+    return result;
 
 }

@@ -278,7 +278,8 @@ compiler_clean:
 
 ####### Compile
 
-main.o: main.cpp ../../src/networklib.h
+main.o: main.cpp ../../src/networklib.h \
+		../../src/networklibfoo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 ####### Install
