@@ -1,6 +1,7 @@
 #include "networklib.h"
 #include <iostream>
 #include <boost/asio.hpp>
+#include <boost/shared_ptr.hpp>
 //#include <memory>
 
 const std::string browser_name="Suppa Browser";
@@ -69,11 +70,11 @@ std::string http(std::string host, std::string page, bool* err){
 		k++; 
     }
     
-	boost::shared_ptr<unsigned char> body(new unsigned char[size]);
+	boost::shared_ptr<unsigned char> body=boost::make_shared<unsigned char[]>(size);   //      (new unsigned char[size]);
 
     boost::system::error_code error;
     read(sock, buffer(body.get(), size), error);
-    sock.shutdown(ip::tcp::socket::shutdown_receive);
+    //sock.shutdown(ip::tcp::socket::shutdown_receive);
     sock.close();
     std::string res((char*)body.get());
     return res;}
