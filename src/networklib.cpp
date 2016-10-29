@@ -30,8 +30,7 @@ std::string http(std::string host, std::string page, bool* err){
     std::string req="GET "+page+" HTTP/1.1\r\n"+"Host: "+host+
                     "\r\nUser-Agent: "+::browser_name+"("+::platform+", "+::shifr+", ru)"+
                     "\r\nAccept: text/html"+"\r\nContent-Length: 0\r\n"+"Connection: close\r\n\r\n";
-
-    write(sock, buffer(req));
+    std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
     boost::asio::streambuf buff;
     read_until(sock, buff , "\r\n\r\n");
     std::vector<std::string> header;
@@ -49,14 +48,14 @@ std::string http(std::string host, std::string page, bool* err){
     std::getline(str, status_message);
     //std::cout<<status_message;
     header.push_back(http_version);     //3-ий-в виде сообщения
-
     std::string now;
     while (std::getline(str, now) && now != "\r"){
       header.push_back(now);
 	  std::cout<<now;
     }
+std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
+std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
     str.clear();
-	
     int k =3;
     int size;
     std::string st;
@@ -69,15 +68,15 @@ std::string http(std::string host, std::string page, bool* err){
 		}
 		k++; 
     }
-    std::cerr « __FILE__ « ':' « __LINE__ « std::endl;
 	boost::shared_ptr<unsigned char[]> body=boost::make_shared<unsigned char[]>(size);
-    std::cerr « __FILE__ « ':' « __LINE__ « std::endl;
+    
     boost::system::error_code error;
     read(sock, buffer(body.get(), size), error);
     //sock.shutdown(ip::tcp::socket::shutdown_receive);
     sock.close();
     std::string res((char*)body.get());
     return res;}
+
     else {*err=true; return ec.message();} //Здесь надо будет возвращать код ошибки
 }
 
@@ -104,16 +103,16 @@ NetworkRes get(std::string site){
 
     //if (site.find(str_http)!=site.npos)       //Работа по HTTP
     //{
+            
             //std::cout<<"Get foo enabled!";
             site.erase(0,7);
             std::string::size_type sl = site.find('/');
             page=site.substr(sl);
             int pl = (int)sl;
-            site.erase(pl,site.length());
+            site.erase(pl,site.length()-1);
             string res=http(site, page, &err);
             result.set_mode(1);
-            result.push(res);
-
+            result.push(res);		
     //}
 //    if (site.find(str_https)!=site.npos){       //Работа по HTTP
 //            site.erase(0,8);
