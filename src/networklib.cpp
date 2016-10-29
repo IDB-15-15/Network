@@ -26,15 +26,15 @@ std::string http(std::string host, std::string page, bool* err)
     boost::system::error_code ec;
     sock.connect(ep, ec);
 
-    if (ec==0){
+    if (ec==0)
+		{
     	//std::cout<<"Get request on the way!";
     	std::string req="GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
                     	"\r\nUser-Agent: " + ::browser_name + "(" + ::platform + ", " + ::shifr + ", ru)" +
                     	"\r\nAccept: text/html" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
+		write(sock, buffer(req));
     	boost::asio::streambuf buff;
-std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
     	read_until(sock, buff , "\r\n\r\n");
-std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
     	std::vector<std::string> header;
     	std::istream str(&buff);
     	std::string http_version;
@@ -57,15 +57,13 @@ std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
       		header.push_back(now);
 	  		std::cout<<now;
     	}
-
-		std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
-		std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
     	str.clear();
     	int k =3;
     	int size;
-    	std::string st;
+    	std::string st;		
     	while (k<header.size())
 			{
+			std::cerr << k << std::endl;
        		st=header[k];
         	st.substr(0, 16);
         	if (st=="Content-Length: ")
@@ -75,7 +73,6 @@ std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
 				}
 			k++; 
     	}
-
 		boost::shared_ptr<unsigned char[]> body = boost::make_shared<unsigned char[]>(size);
        	boost::system::error_code error;
     	read(sock, buffer(body.get(), size), error);
