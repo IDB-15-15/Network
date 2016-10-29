@@ -24,7 +24,7 @@ lib Networklib
 
 
 # Приложение для отладки
-exe tool_Networklib : tests/untitled/main.cpp Networklib ;
+exe tool_Networklib : src/tool_Networklib.cpp Networklib ;
 install install_tool_Networklib : tool_Networklib : <location>build/bin ;
 
 
