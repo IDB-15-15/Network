@@ -31,16 +31,16 @@ std::string http(std::string host, std::string page, bool* err)
     	std::string req="GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
                     	"\r\nUser-Agent: " + ::browser_name + "(" + ::platform + ", " + ::shifr + ", ru)" +
                     	"\r\nAccept: text/html" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
-
     	boost::asio::streambuf buff;
+std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
     	read_until(sock, buff , "\r\n\r\n");
+std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
     	std::vector<std::string> header;
     	std::istream str(&buff);
     	std::string http_version;
     	str>> http_version;
     	//std::cout<<http_version;
     	header.push_back(http_version);    //1-ый эл-т хедера - версия HTTP
-
     	unsigned int status_code;
     	str >> status_code;
     	std::string sti = std::to_string(status_code);
@@ -51,7 +51,6 @@ std::string http(std::string host, std::string page, bool* err)
     	std::getline(str, status_message);
     	//std::cout<<status_message;
     	header.push_back(http_version);     //3-ий-в виде сообщения
-
     	std::string now;
     	while (std::getline(str, now) && now != "\r")
 			{
