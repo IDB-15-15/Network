@@ -40,55 +40,56 @@ std::string http(std::string host, std::string page, bool* err)
     	//std::vector<std::string> header;
     	std::istream str(&buff);
 		std::string now;
-		std:getline(str, now);
-		std::cerr<<now;
-		std::regex reg("HTTP/1.1[[:space:]]*[0-9]*");
+		std::getline(str, now);
+		//std::cerr<<now<<std::endl;
+		std::regex reg("HTTP/1\.1[[:space:]]*([0-9]*)");
 		auto str_begin=std::sregex_iterator(now.begin(), now.end(), reg);
 		std::sregex_iterator i = str_begin;
 		std::smatch match = *i;
-		//std::cerr<<match[0]<<"        "<<match[1];
+		//std::cerr<<match[1]<<std::endl;//"        "<<match[1]<<std::endl;
 		std::map<std::string, std::string> header;
-		header["status_code"] = match[2];
+		header["status_code"] = match[1];
 
-
-
-
-    	//std::string http_version;
-    	//str>> http_version;
-    	//std::cout<<http_version;
-    	//header.push_back(http_version);    //1-ый эл-т хедера - версия HTTP
-    	//unsigned int status_code;
-    	//str >> status_code;
-    	//std::string sti = std::to_string(status_code);
-    	//std::cout<<sti;
-    	//header.push_back(sti);    //2-ой-статус подключения в виде кода
-
-    	//std::string status_message;
-    	//std::getline(str, status_message);
-    	//std::cout<<status_message;
-    	//header.push_back(http_version);     //3-ий-в виде сообщения
-    	//std::string now;
-    	//while (std::getline(str, now) && now != "\r")
-		//	{
-      	//	header.push_back(now);
-	  	//	std::cout<<now;
-    	//}
-    	str.clear();
-    	int k =3;
-    	int size;
-    	std::string st;;	
-    	//while (k<header.size())
-			//{
-       		//st=header[k];
-        	//st=st.substr(0, 16);
-        	//if (st=="Content-Length: ")
-				//{
-            	//std::string::size_type sz; 
-				//size=std::stoi (header[k], &sz);        
-				//}
-			//k++; 
-    	//}
-		//std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
+        std::vector<std::regex> reg_v;
+		reg="Date:[[:space:]](.*)";
+		reg_v.push_back(reg);
+		reg="Server:[[:space:]](.*)";
+		reg_v.push_back(reg);
+    	reg="Content-Type:[[:space:]](.*)";
+		reg_v.push_back(reg);
+		reg="Content-Length:[[:space:]]([0-9]*)";
+		reg_v.push_back(reg);
+		reg="Connection:[[:space:]](.*)";
+		reg_v.push_back(reg);
+		reg="Location:[[:space:]](.*)";
+		reg_v.push_back(reg);
+		std::vector<std::string> keywords;
+		keywords.push_back("Date");
+		keywords.push_back("Server");
+		keywords.push_back("Content-Type");
+		keywords.push_back("Content-Length");
+		keywords.push_back("Connection");
+		keywords.push_back("Location");
+		std::sregex_iterator end;
+		while(str)
+		{
+			std::getline(str, now);
+			for(int k=0; k<reg_v.size(); k++)
+			{
+				str_begin=std::sregex_iterator(now.begin(), now.end(), reg_v[k]);
+				i=str_begin;
+				if(i!=end)
+				{
+					match=*i;
+					header[keywords.at(k)]=match[1];
+					std::cout<<match[0]<<"      "<<match[1]<<std::endl;
+				}			
+			}
+			
+		}
+		str.clear();
+    	std::string st;
+		int size=std::stoi(header.at("Content-Length"));
 		boost::shared_ptr<unsigned char[]> body = boost::make_shared<unsigned char[]>(size);
        	boost::system::error_code error;
     	read(sock, buffer(body.get(), size), error);
