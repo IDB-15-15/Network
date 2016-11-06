@@ -2,9 +2,10 @@
 #include <iostream>
 #include <boost/asio.hpp>
 #include <boost/make_shared.hpp>
+#include <regex>
 //#include <memory>
 
-const std::string browser_name="Suppa Browser";
+const std::string browser_name="Suppa_Browser";
 const std::string platform="Linux";
 const std::string shifr="N";
 
@@ -29,50 +30,65 @@ std::string http(std::string host, std::string page, bool* err)
     if (ec==0)
 		{
     	//std::cout<<"Get request on the way!";
-    	std::string req="GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
-                    	"\r\nUser-Agent: " + ::browser_name + "(" + ::platform + ", " + ::shifr + ", ru)" +
-                    	"\r\nAccept: text/html" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
+		std::string req="GET " + page + " HTTP/1.1\r\nHost: "+host+"\r\nAccept: */*\r\nConnection: close\r\n\r\n";
+    	//std::string req="GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
+          //          	"\r\nUser-Agent: " + ::browser_name + " (" + ::platform + ", " + ::shifr + ", ru)" +
+          //          	"\r\nAccept: text/html" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
 		write(sock, buffer(req));
     	boost::asio::streambuf buff;
     	read_until(sock, buff , "\r\n\r\n");
-    	std::vector<std::string> header;
+    	//std::vector<std::string> header;
     	std::istream str(&buff);
-    	std::string http_version;
-    	str>> http_version;
-    	//std::cout<<http_version;
-    	header.push_back(http_version);    //1-ый эл-т хедера - версия HTTP
-    	unsigned int status_code;
-    	str >> status_code;
-    	std::string sti = std::to_string(status_code);
-    	//std::cout<<sti;
-    	header.push_back(sti);    //2-ой-статус подключения в виде кода
+		std::string now;
+		std:getline(str, now);
+		std::cerr<<now;
+		std::regex reg("HTTP/1.1[[:space:]]*[0-9]*");
+		auto str_begin=std::sregex_iterator(now.begin(), now.end(), reg);
+		std::sregex_iterator i = str_begin;
+		std::smatch match = *i;
+		//std::cerr<<match[0]<<"        "<<match[1];
+		std::map<std::string, std::string> header;
+		header["status_code"] = match[2];
 
-    	std::string status_message;
-    	std::getline(str, status_message);
+
+
+
+    	//std::string http_version;
+    	//str>> http_version;
+    	//std::cout<<http_version;
+    	//header.push_back(http_version);    //1-ый эл-т хедера - версия HTTP
+    	//unsigned int status_code;
+    	//str >> status_code;
+    	//std::string sti = std::to_string(status_code);
+    	//std::cout<<sti;
+    	//header.push_back(sti);    //2-ой-статус подключения в виде кода
+
+    	//std::string status_message;
+    	//std::getline(str, status_message);
     	//std::cout<<status_message;
-    	header.push_back(http_version);     //3-ий-в виде сообщения
-    	std::string now;
-    	while (std::getline(str, now) && now != "\r")
-			{
-      		header.push_back(now);
-	  		std::cout<<now;
-    	}
+    	//header.push_back(http_version);     //3-ий-в виде сообщения
+    	//std::string now;
+    	//while (std::getline(str, now) && now != "\r")
+		//	{
+      	//	header.push_back(now);
+	  	//	std::cout<<now;
+    	//}
     	str.clear();
     	int k =3;
     	int size;
-    	std::string st;		
-    	while (k<header.size())
-			{
-			std::cerr << k << std::endl;
-       		st=header[k];
-        	st.substr(0, 16);
-        	if (st=="Content-Length: ")
-				{
-            	std::string::size_type sz; 
-				size=std::stoi (header[k], &sz);        
-				}
-			k++; 
-    	}
+    	std::string st;;	
+    	//while (k<header.size())
+			//{
+       		//st=header[k];
+        	//st=st.substr(0, 16);
+        	//if (st=="Content-Length: ")
+				//{
+            	//std::string::size_type sz; 
+				//size=std::stoi (header[k], &sz);        
+				//}
+			//k++; 
+    	//}
+		//std::cerr << __FILE__ << ':' << __LINE__ << std::endl;
 		boost::shared_ptr<unsigned char[]> body = boost::make_shared<unsigned char[]>(size);
        	boost::system::error_code error;
     	read(sock, buffer(body.get(), size), error);
