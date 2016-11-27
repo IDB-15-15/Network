@@ -1,3 +1,4 @@
+
 # Настройки текущего проекта
 project Networklib
 	: default-build release
@@ -23,10 +24,13 @@ lib Networklib
 	;
 
 
-# Приложение для отладки
+# Приложение для отладки сети
 exe tool_Networklib : src/tool_Networklib.cpp Networklib ;
 install install_tool_Networklib : tool_Networklib : <location>build/bin ;
 
+# Приложение для отладки локалки
+exe tool_Locallib : src/tool_Locallib.cpp Locallib ;
+install install_tool_Locallib : tool_Locallib : <location>build/bin ;
 
 # Unit-тесты
 #import testing ;
