@@ -1,6 +1,9 @@
+#include <boost/any.hpp>
+#include <cstddef>
+
 struct NetworkRes
 {
-    boost::any res;         //результат - массив
-    const char *res_arr;    //адрес массива
-    std::size_t size;       //размер массива
+    boost::any res;         //Г°ГҐГ§ГіГ«ГјГІГ ГІ - Г¬Г Г±Г±ГЁГў
+    const char *res_arr;    //Г Г¤Г°ГҐГ± Г¬Г Г±Г±ГЁГўГ 
+    std::size_t size;       //Г°Г Г§Г¬ГҐГ° Г¬Г Г±Г±ГЁГўГ 
 };
