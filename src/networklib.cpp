@@ -122,7 +122,7 @@ std::cerr<<"asdasd"<<std::endl;
 		return res;
 		}                                                 //Здесь надо будет возвращать код ошибки
 	}
-
+/*
 NetworkRes get(std::string site)
 	{
     using namespace std;
@@ -177,3 +177,4 @@ NetworkRes get(std::string site)
 	return result;
 
 }
+*/
