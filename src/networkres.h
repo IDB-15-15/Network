@@ -3,7 +3,7 @@
 
 struct NetworkRes
 {
-    boost::any res;         //ðåçóëüòàò - ìàññèâ
-    const char *res_arr;    //àäðåñ ìàññèâà
-    std::size_t size;       //ðàçìåð ìàññèâà
+    boost::any res;         //result - array
+    const char *res_arr;    //array's address
+    std::size_t size;       //array's size
 };

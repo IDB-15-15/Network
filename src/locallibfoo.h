@@ -1,17 +1,17 @@
 NetworkRes local(std::string local_url)
 {
     using namespace boost::interprocess;
-    const char *file_name = local_url.c_str();	//получили имя файла
+    const char *file_name = local_url.c_str();	//get file name
 
-    file_mapping m_file(file_name, read_only);  //прочли файл
-    mapped_region region(m_file, read_only);    //запихали его в регион
+    file_mapping m_file(file_name, read_only);  //read file
+    mapped_region region(m_file, read_only);    //push it to region
 
-    NetworkRes res;                             //создали объект класса запоминающего результат
+    NetworkRes res;                             //create object of save result class
 
-    res.res_arr = (static_cast<const char *> (region.get_address()));   //запомнили адрес массива
-    res.size = region.get_size();                                       //запомнили размер
+    res.res_arr = (static_cast<const char *> (region.get_address()));   //save array's address
+    res.size = region.get_size();                                       //save size
     res.res = std::make_shared<std::pair<file_mapping, mapped_region>>
-            (std::move (m_file), std::move (region));                   //сохранили сам массив
+            (std::move (m_file), std::move (region));                   //save array
 
     return res;
 }
