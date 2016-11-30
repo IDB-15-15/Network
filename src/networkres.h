@@ -1,5 +1,5 @@
 #include <boost/any.hpp>
-#include <cstddef>
+#include <memory>
 
 struct NetworkRes
 {
