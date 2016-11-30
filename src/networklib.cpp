@@ -1,4 +1,4 @@
-#include "networklib.h"
+/*#include "networklib.h"
 #include <iostream>
 #include <boost/asio.hpp>
 #include <boost/make_shared.hpp>
@@ -31,7 +31,7 @@ boost::any http(std::string host, std::string page, bool* err, std::map<std::str
     if (ec==0)
 		{
     	//std::cout<<"Get request on the way!";
-		//std::string req="GET " + page + " HTTP/1.1\r\nHost: "+host+"\r\nAccept: */*\r\nConnection: close\r\n\r\n";
+		//std::string req="GET " + page + " HTTP/1.1\r\nHost: "+host+"\r\nAccept: *\r\nConnection: close\r\n\r\n";
     	std::string req="GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
                     	"\r\nUser-Agent: " + ::browser_name + " (" + ::platform + ", " + ::shifr + ", ru)" +
                     	"\r\nAccept: text/html" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
