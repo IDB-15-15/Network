@@ -1,3 +1,10 @@
+
+
+# Получаем путь до boost и подключаем его к своему проекту
+import os ;
+BOOST_ROOT = [ os.environ BOOST_ROOT ] ;
+use-project boost : $(BOOST_ROOT) ;
+
 project NetworkLib
 	:
 		# Конкретизируем параметры сборки; линковка статическая, чтобы не париться
@@ -5,12 +12,6 @@ project NetworkLib
 	: default-build release
 	: build-dir build
 	;
-
-
-# Получаем путь до boost и подключаем его к своему проекту
-import os ;
-BOOST_ROOT = [ os.environ BOOST_ROOT ] ;
-use-project boost : $(BOOST_ROOT) ;
 
 
 # Актуально только для сети (в остальных проектах if-else ниже писать не надо):
