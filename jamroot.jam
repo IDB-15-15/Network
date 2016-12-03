@@ -1,15 +1,29 @@
-
-# Настройки текущего проекта
-project Networklib
+project NetworkLib
+	:
+		# Конкретизируем параметры сборки; линковка статическая, чтобы не париться
+		requirements <link>static <threading>multi <variant>release
 	: default-build release
 	: build-dir build
-	: requirements <threading>multi
 	;
 
 
-# Подключаем вспомогательный проект для подклюения boost
-use-project lib : lib ;
+# Получаем путь до boost и подключаем его к своему проекту
+import os ;
+BOOST_ROOT = [ os.environ BOOST_ROOT ] ;
+use-project boost : $(BOOST_ROOT) ;
 
+
+# Актуально только для сети (в остальных проектах if-else ниже писать не надо):
+# дополнительно подключаем библиотеку винды для работы с сокетами
+if [ os.name ] = NT
+{
+	lib ws2_32 : : <name>ws2_32 ;
+	alias another-libs : ws2_32 ;
+}
+else
+{
+	alias another-libs ;
+}
 
 # Основная библиотека
 lib Networklib
@@ -17,22 +31,16 @@ lib Networklib
 		# Исходники текущего проекта (кроме tool_* и test_*)
 		[ glob-tree *.cpp *.hpp *.ui : test_* tool_* ]
 		
-		# Подключаем нужные части буста (см. ../lib/jamroot.jam!)
-		/lib//boost_asio
 	: <link>static
 	: <variant>release
 	;
 
-
-# Приложение для отладки сети
+# Приложение для отладки
 exe tool_Networklib : src/tool_Networklib.cpp Networklib ;
 install install_tool_Networklib : tool_Networklib : <location>build/bin ;
 
-# Приложение для отладки локалки
-exe tool_Locallib : src/tool_Locallib.cpp Locallib ;
-install install_tool_Locallib : tool_Locallib : <location>build/bin ;
 
-# Unit-тесты
-#import testing ;
-
-#unit-test test_get : src/test_get.cpp Networklib ;
+# Теперь библиотеки буста подключаются проще: /boost/имя_библиотеки
+# Это работает только для компилируемых библиотек, для работы header-only библиотек буста
+# (включая asio и др.) необходимо подключить одну из компилируемых библиотек, (напр. /boost/system)
+exe main : main.cpp /boost/filesystem another-libs ;
