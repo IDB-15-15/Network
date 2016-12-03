@@ -1,7 +1,7 @@
 project NetworkLib
 	:
 		# Конкретизируем параметры сборки; линковка статическая, чтобы не париться
-		requirements <link>static <threading>multi <variant>release
+		requirements <link>static <threading>multi <variant>release <include>$(BOOST_ROOT)
 	: default-build release
 	: build-dir build
 	;
@@ -30,17 +30,18 @@ lib Networklib
 	:
 		# Исходники текущего проекта (кроме tool_* и test_*)
 		[ glob-tree *.cpp *.hpp *.ui : test_* tool_* ]
+	: Networklib /boost/system another-libs ;
 		
 	: <link>static
 	: <variant>release
 	;
 
 # Приложение для отладки
-exe tool_Networklib : src/tool_Networklib.cpp Networklib ;
+exe tool_Networklib : src/tool_Networklib.cpp ;
 install install_tool_Networklib : tool_Networklib : <location>build/bin ;
 
 
 # Теперь библиотеки буста подключаются проще: /boost/имя_библиотеки
 # Это работает только для компилируемых библиотек, для работы header-only библиотек буста
 # (включая asio и др.) необходимо подключить одну из компилируемых библиотек, (напр. /boost/system)
-exe main : main.cpp /boost/filesystem another-libs ;
+#exe main : main.cpp /boost/filesystem another-libs ;
