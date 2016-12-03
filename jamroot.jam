@@ -31,7 +31,7 @@ lib Networklib
 	:
 		# Исходники текущего проекта (кроме tool_* и test_*)
 		[ glob-tree *.cpp *.hpp *.ui : test_* tool_* ]
-	: Networklib /boost/system another-libs ;
+	 Networklib /boost/system another-libs ;
 		
 	: <link>static
 	: <variant>release
