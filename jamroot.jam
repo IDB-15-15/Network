@@ -14,7 +14,7 @@ use-project lib : lib ;
 lib Networklib
 	:
 		# Исходники текущего проекта (кроме tool_* и test_*)
-		[ glob-tree *.cpp *.hpp *.ui : test_* tool_* ]
+		[ glob-tree *.cpp *.hpp *.ui : test_* tool_*  locallib.cpp locallib.h networkres.h ]
 		
 		# Подключаем нужные части буста (см. ../lib/jamroot.jam!)
 		/lib//boost_asio
