@@ -1,4 +1,4 @@
-/*#include "networklib.h"
+#include "networklib.h"
 #include <iostream>
 #include <boost/asio.hpp>
 #include <boost/make_shared.hpp>
@@ -122,7 +122,7 @@ std::cerr<<"asdasd"<<std::endl;
 		return res;
 		}                                                 //Здесь надо будет возвращать код ошибки
 	}
-/*
+
 NetworkRes get(std::string site)
 	{
     using namespace std;
@@ -177,4 +177,4 @@ NetworkRes get(std::string site)
 	return result;
 
 }
-*/
+
