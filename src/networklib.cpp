@@ -49,7 +49,7 @@ NetworkRes http(std::string host, std::string page, bool* err)
 		std::smatch match = *i;
 		std::map<std::string, std::string> header;
 		header["status_code"] = match[1];
-		std::cerr<<match[1]<<std::endl;
+		//std::cerr<<match[1]<<std::endl;
 
         reg="([^:]*):[[:space:]](.*)";
 		std::sregex_iterator end;
@@ -61,13 +61,17 @@ NetworkRes http(std::string host, std::string page, bool* err)
 			i=str_begin;
 			if (i==end) break;
 			match=*i;
-			std::cerr<<now<<std::endl;
+			//std::cerr<<now<<std::endl;
 			header[match[1]]=match[2];
 			//std::cerr<<match[1]<<"      "<<match[2]<<std::endl;
 		};
 		str.clear();
     	std::string st;
 		boost::system::error_code error;
+
+		if((header["status_code"]=="300")||(header["status_code"]=="301")||(header["status_code"]=="302")
+			||(header["status_code"]=="303")||(header["status_code"]=="305")||(header["status_code"]=="307"))
+		return get(header["Location"]);
 
 	//std::cerr<<"Header is here!"<<std::endl;
 
