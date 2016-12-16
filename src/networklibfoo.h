@@ -10,10 +10,10 @@ inline int NetworkRes::get_mode(){
 inline void NetworkRes::set_mode(int mod){
     mode=mod;
 };
-inline char* get_res_arr(){
+inline char* NetworkRes::get_res_arr(){
 	return res_arr;
 };
-inline void push(char *res_){
+inline void NetworkRes::push(char *res_){
 	res_arr=res_;
 };
 inline boost::any NetworkRes::get_res(){
@@ -22,10 +22,11 @@ inline boost::any NetworkRes::get_res(){
 inline void NetworkRes::push_any(boost::any value){
     res=value;
 };
-inline std::map<std::string, std::string> get_header(){
+inline std::map<std::string, std::string> NetworkRes::get_header(){
 	return header;
 };
-inline void push_header(std::map<std::string, std::string>& heade){
+inline void NetworkRes::push_header(std::map<std::string, std::string> heade){
 	header=heade;
 };
+
 

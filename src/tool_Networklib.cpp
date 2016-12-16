@@ -5,7 +5,6 @@
 int main()
 {
  std::string site="http://www.boost.org/";
- std::map<std::string, std::string> header;
- NetworkRes res=get(site, header);
- std::cout<<res.get_res()<<std::endl;
+ NetworkRes res=get(site);
+ std::cout<<res.get_res_arr()<<std::endl;
 }

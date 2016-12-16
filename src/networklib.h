@@ -4,12 +4,13 @@
 #include <iostream>
 #include <memory>
 #include <boost/any.hpp>
+#include <map>
 class NetworkRes{
     int error=0;
     int mode=0;
     boost::any res;
 	char *res_arr;
-	std::map<std::string, std::string>& header;
+	std::map<std::string, std::string> header;
   public:
     inline NetworkRes & operator=(const NetworkRes &some)=default;
     inline int get_error();
@@ -21,7 +22,9 @@ class NetworkRes{
     inline boost::any get_res();
     inline void push_any(boost::any value);
 	inline std::map<std::string, std::string> get_header();
-	inline void push_header(std::map<std::string, std::string>& heade);
+	inline void push_header(std::map<std::string, std::string> heade);
+
+    NetworkRes()=default;
 };
 
 #include "networklibfoo.h"

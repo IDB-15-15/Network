@@ -13,9 +13,11 @@ const std::string shifr="N";
 
 
 
-boost::any http(std::string host, std::string page, bool* err, std::map<std::string, std::string>& header, char *body_)
+NetworkRes http(std::string host, std::string page, bool* err)
 	{
     using namespace boost::asio;
+	char* body_;
+	NetworkRes result;
     io_service service;
     ip::tcp::resolver resolver(service);
     ip::tcp::resolver::query query(host, "80");
@@ -45,9 +47,9 @@ boost::any http(std::string host, std::string page, bool* err, std::map<std::str
 		auto str_begin=std::sregex_iterator(now.begin(), now.end(), reg);
 		std::sregex_iterator i = str_begin;
 		std::smatch match = *i;
-		//std::map<std::string, std::string> header;
+		std::map<std::string, std::string> header;
 		header["status_code"] = match[1];
-		std::cerr<<match[1];
+		std::cerr<<match[1]<<std::endl;
 
         reg="([^:]*):[[:space:]](.*)";
 		std::sregex_iterator end;
@@ -61,22 +63,27 @@ boost::any http(std::string host, std::string page, bool* err, std::map<std::str
 			match=*i;
 			std::cerr<<now<<std::endl;
 			header[match[1]]=match[2];
-			std::cerr<<match[1]<<"      "<<match[2]<<std::endl;
-		}
-std::cerr<<"asdasd"<<std::endl;
+			//std::cerr<<match[1]<<"      "<<match[2]<<std::endl;
+		};
 		str.clear();
     	std::string st;
 		boost::system::error_code error;
-		while (str)
-		{
-			str.read(body.get()+ostatok, 50);
-			ostatok+=str.gcount();
-		}
+
+	//std::cerr<<"Header is here!"<<std::endl;
+
+		result.push_header(header);
+
+		//while (str)
+		//{
+			//str.read(body.get()+ostatok, 50);
+			//ostatok+=str.gcount();
+		//}
 		if (header.count("Content-Length")!=0)
 		{
 			int size=std::stoi(header.at("Content-Length"));
 			boost::shared_ptr<char[]> body = boost::make_shared<char[]>(size);
 			size_t ostatok=0;
+	//std::cerr<<"Content-length est"<<std::endl;
 			while (str)
 			{
 				str.read(body.get()+ostatok, 50);
@@ -87,13 +94,16 @@ std::cerr<<"asdasd"<<std::endl;
     		sock.close();
     		boost::any res=body;
 			body_=body.get();
-    		return res;														//исправить на boost::any
+			result.push_any(res);
+			result.push(body_);
+    		return result;														//исправить на boost::any
 		}
 		else
 		{
-			size_t readed=50;
+			size_t readed=1;
 			std::vector<char> vec;
 			size_t ostatok=0;
+	//std::cerr<<"Net ego"<<std::endl;
 			while (str)
 			{
 				vec.resize(vec.size()+50);
@@ -101,25 +111,32 @@ std::cerr<<"asdasd"<<std::endl;
 				ostatok+=str.gcount();
 				vec.resize(vec.size()-50+str.gcount());
 			}
-			while(readed==50)
+	//std::cerr<<"Ya chital"<<std::endl;
+			boost::system::error_code erread;
+			while(readed==1)
 			{
-				vec.resize(vec.size()+50);
-				readed=read(sock, buffer(vec.data()+ostatok, 50), transfer_exactly(50));
-				ostatok+=50;
+				vec.resize(vec.size()+1);
+				readed=read(sock, buffer(vec.data()+ostatok, 1), transfer_exactly(1), erread);
+				ostatok+=1;
 			}
+	//std::cerr<<"I vnov prodoljaetsya boy!"<<std::endl;
 			boost::shared_ptr<std::vector<char>> body=boost::make_shared<std::vector<char>>(vec);
 			sock.shutdown(ip::tcp::socket::shutdown_receive);
     		sock.close();
 			boost::any res=body;
 			body_=body.get()->data();
-			return res;
+			result.push_any(res);
+			result.push(body_);
+			return result;
 		}
 	}
     else 
 		{
 		*err=true;
 		boost::any res=ec.message();
-		return res;
+		result.push_any(res);
+		result.set_error(true); 
+		return result;
 		}                                                 //Здесь надо будет возвращать код ошибки
 	}
 
@@ -131,7 +148,6 @@ NetworkRes get(std::string site)
     string str_http = "http://";
     string str_https = "https://";
     string page = "";
-    NetworkRes result;                        //Возвращаемый экземпляр класса
 
     bool right=true;
     bool err=false;
@@ -154,14 +170,9 @@ NetworkRes get(std::string site)
     page=site.substr(sl);
     int pl = (int)sl;
     site.erase(pl,site.length()-1);
+    NetworkRes result=http(site, page, &err);
 
-	std::map<std::string, std::string> header;
-	char *body;
-    boost::any res = http(site, page, &err, header, body);
-	result.push_header(header);
-    result.set_mode(1);
-    result.push_any(res);
-	result.push(body_);		
+	
     //}
 //    if (site.find(str_https)!=site.npos){       //Работа по HTTP
 //            site.erase(0,8);
