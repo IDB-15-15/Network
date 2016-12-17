@@ -1,4 +1,4 @@
-#include "networkres.h"
+#include "locallib.h"
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 #include <string>
