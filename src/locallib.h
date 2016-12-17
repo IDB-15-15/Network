@@ -1,4 +1,4 @@
-#ifndef LOCALLIB_H
+ж#ifndef LOCALLIB_H
 #define LOCALLIB_H
 
 #include <boost/any.hpp>
@@ -10,7 +10,7 @@
 
 #include "networkres.h"
 
-NetworkRes local(std::string local_url)
+NetworkRes local(std::string local_url);
 
 #include "locallib.cpp"
 
