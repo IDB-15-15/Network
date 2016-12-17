@@ -8,7 +8,7 @@ use-project boost : $(BOOST_ROOT) ;
 project NetworkLib
 	:
 		# Конкретизируем параметры сборки; линковка статическая, чтобы не париться
-		requirements <link>static <threading>multi <variant>release <include>$(BOOST_ROOT)
+		requirements <link>static <threading>multi <include>$(BOOST_ROOT)
 	: default-build release
 	: build-dir build
 	;
@@ -41,6 +41,9 @@ lib Networklib
 exe tool_Networklib : src/tool_Networklib.cpp ;
 install install_tool_Networklib : tool_Networklib : <location>build/bin ;
 
+# Приложение для отладки
+exe tool_Locallib : src/tool_Locallib.cpp ;
+install install_tool_Networklib : tool_Networklib : <location>build/bin ;
 
 # Теперь библиотеки буста подключаются проще: /boost/имя_библиотеки
 # Это работает только для компилируемых библиотек, для работы header-only библиотек буста
