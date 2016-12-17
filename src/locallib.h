@@ -1,4 +1,4 @@
-ж#ifndef LOCALLIB_H
+#ifndef LOCALLIB_H
 #define LOCALLIB_H
 
 #include <boost/any.hpp>
