@@ -12,6 +12,4 @@
 
 NetworkRes local(std::string local_url);
 
-#include "locallib.cpp"
-
 #endif // LOCALLIB_H
