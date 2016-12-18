@@ -1,10 +1,11 @@
-#include "networklib.h"
+#include "MainFoo.h"
+#include "networkres.h"
 #include <iostream>
 #include <memory>
 #include <string>
 int main()
 {
- std::string site="http://www.ukranews.com/";
- NetworkRes res=get(site);
+ std::string site="file:///home/dima/some.txt";
+ NetworkRes res=starter(site);
  std::cout<<res.get_res_arr()<<std::endl;
 }

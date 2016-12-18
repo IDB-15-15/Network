@@ -9,7 +9,8 @@
 const std::string browser_name="Suppa_Browser";
 const std::string platform="Linux";
 const std::string shifr="N";
-
+const std::string error_message_before="<!DOCTYPE HTML><html><head><title>Ошибка!</title></head><body><center><h1>Страница недоступна. Код ошибки ";
+const std::string error_message_after=".</h1></center></body></html>"; 
 
 
 
@@ -72,6 +73,15 @@ NetworkRes http(std::string host, std::string page, bool* err)
 		if((header["status_code"]=="300")||(header["status_code"]=="301")||(header["status_code"]=="302")
 			||(header["status_code"]=="303")||(header["status_code"]=="305")||(header["status_code"]=="307"))
 		return get(header["Location"]);
+
+		if(header["status_code"]!="200")
+		{
+			std::string temp=::error_message_before+header["status_code"]+error_message_after;
+			result.push_header(header);
+			const char* err_mess=temp.c_str();
+			result.push(err_mess);
+			result.set_error(true);
+		}
 
 	//std::cerr<<"Header is here!"<<std::endl;
 
@@ -157,38 +167,24 @@ NetworkRes get(std::string site)
     bool err=false;
 
     for (int i=8; i<site.length(); i++)
-    	{                                         //Проверяем на наличие адреса страницы
+    {                                         //Проверяем на наличие адреса страницы
         if (site[i]=='/') right=false;
-    	}
-    if (right)
-    	{                                //И добавляем, если надо
-        page="/";
-    	}
+   	}
 
-    //if (site.find(str_http)!=site.npos)       //Работа по HTTP
-    //{
-            
-            //std::cout<<"Get foo enabled!";
+    if (right)
+   	{                                //И добавляем, если надо
+       	site+="/";
+   	}
+
 	site.erase(0,7);
+
     std::string::size_type sl = site.find('/');
     page=site.substr(sl);
+
     int pl = (int)sl;
     site.erase(pl,site.length()-1);
     NetworkRes result=http(site, page, &err);
 
-	
-    //}
-//    if (site.find(str_https)!=site.npos){       //Работа по HTTP
-//            site.erase(0,8);
-//            std::string::size_type sl = site.find('/');
-//            page=site.substr(sl);
-//            int pl = (int)sl;
-//            site.erase(pl,site.length());
-//            string res=http(site, page, &err);
-//            result.set_mode(1);
-//            result.push(res);
-
-//        }
 	return result;
 
 }

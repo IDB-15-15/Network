@@ -10,10 +10,10 @@ inline int NetworkRes::get_mode(){
 inline void NetworkRes::set_mode(int mod){
     mode=mod;
 };
-inline char* NetworkRes::get_res_arr(){
+inline const char* NetworkRes::get_res_arr(){
 	return res_arr;
 };
-inline void NetworkRes::push(char *res_){
+inline void NetworkRes::push(const char *res_){
 	res_arr=res_;
 };
 inline boost::any NetworkRes::get_res(){

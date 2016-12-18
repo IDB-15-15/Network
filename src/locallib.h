@@ -10,8 +10,6 @@
 
 #include "networkres.h"
 
-NetworkRes local(std::string local_url)
-
-#include "locallib.cpp"
+NetworkRes local(std::string local_url);
 
 #endif // LOCALLIB_H
