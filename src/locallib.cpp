@@ -25,7 +25,7 @@ NetworkRes local(std::string local_url)
     }
     catch(interprocess_exception &e){
         error_ptr = std::make_shared<std::string>                           //create error's message
-                ("<html>" + static_cast<std::string> (e.what()) + "</html>");
+                ("<html><title>Error</title><body>" + static_cast<std::string> (e.what()) + "</body></html>");
 
         res.res = error_ptr;                //save error's message
         res.size = error_ptr->size();       //save error's message size
