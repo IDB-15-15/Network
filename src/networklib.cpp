@@ -5,6 +5,7 @@
 #include <regex>
 #include <boost/any.hpp>
 #include <string>
+#include <cstdlib>
 //#include <memory>
 
 const std::string browser_name="Suppa_Browser";
@@ -95,7 +96,7 @@ NetworkRes http(std::string host, std::string page, bool* err)
 		//}
 		if (header.count("Content-Length")!=0)
 		{
-			int size=std::stoi(header.at("Content-Length"));
+			int size=std::strtoull(header.at("Content-length").c_str(), nullptr, 10);
 			boost::shared_ptr<char[]> body = boost::make_shared<char[]>(size);
 			size_t ostatok=0;
 	//std::cerr<<"Content-length est"<<std::endl;
