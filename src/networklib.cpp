@@ -4,6 +4,7 @@
 #include <boost/make_shared.hpp>
 #include <regex>
 #include <boost/any.hpp>
+#include <string>
 //#include <memory>
 
 const std::string browser_name="Suppa_Browser";

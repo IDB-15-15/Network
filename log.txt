@@ -1,0 +1,90 @@
+Performing configuration checks
+
+    - 32-bit                   : yes (cached)
+    - arm                      : no  (cached)
+    - mips1                    : no  (cached)
+    - power                    : no  (cached)
+    - sparc                    : no  (cached)
+    - x86                      : yes (cached)
+    - symlinks supported       : no  (cached)
+    - junctions supported      : yes (cached)
+    - hardlinks supported      : yes (cached)
+...patience...
+...patience...
+...found 1490 targets...
+...updating 5 targets...
+gcc.compile.c++ build\gcc-mingw-5.3.0\release\link-static\threading-multi\src\networklib.o
+src\networklib.cpp: In function 'NetworkRes http(std::__cxx11::string, std::__cxx11::string, bool*)':
+src\networklib.cpp:48:18: warning: unknown escape sequence: '\.'
+   std::regex reg("HTTP/1\.1[[:space:]]*([0-9]*)");
+                  ^
+src\networklib.cpp:98:13: error: 'stoi' is not a member of 'std'
+    int size=std::stoi(header.at("Content-Length"));
+             ^
+src\networklib.cpp: In function 'NetworkRes get(std::__cxx11::string)':
+src\networklib.cpp:170:20: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+     for (int i=8; i<site.length(); i++)
+                    ^
+In file included from C:\boost_1_62_0/boost/asio/detail/throw_error.hpp:19:0,
+                 from C:\boost_1_62_0/boost/asio/detail/impl/win_tss_ptr.ipp:22,
+                 from C:\boost_1_62_0/boost/asio/detail/win_tss_ptr.hpp:76,
+                 from C:\boost_1_62_0/boost/asio/detail/tss_ptr.hpp:25,
+                 from C:\boost_1_62_0/boost/asio/detail/call_stack.hpp:20,
+                 from C:\boost_1_62_0/boost/asio/impl/handler_alloc_hook.ipp:19,
+                 from C:\boost_1_62_0/boost/asio/handler_alloc_hook.hpp:80,
+                 from C:\boost_1_62_0/boost/asio/detail/handler_alloc_helpers.hpp:21,
+                 from C:\boost_1_62_0/boost/asio/detail/bind_handler.hpp:19,
+                 from C:\boost_1_62_0/boost/asio/detail/wrapped_handler.hpp:18,
+                 from C:\boost_1_62_0/boost/asio/io_service.hpp:24,
+                 from C:\boost_1_62_0/boost/asio/basic_io_object.hpp:19,
+                 from C:\boost_1_62_0/boost/asio/basic_socket.hpp:20,
+                 from C:\boost_1_62_0/boost/asio/basic_datagram_socket.hpp:20,
+                 from C:\boost_1_62_0/boost/asio.hpp:21,
+                 from src\networklib.cpp:3:
+C:\boost_1_62_0/boost/system/error_code.hpp: At global scope:
+C:\boost_1_62_0/boost/system/error_code.hpp:221:36: warning: 'boost::system::posix_category' defined but not used [-Wunused-variable]
+     static const error_category &  posix_category = generic_category();
+                                    ^
+C:\boost_1_62_0/boost/system/error_code.hpp:222:36: warning: 'boost::system::errno_ecat' defined but not used [-Wunused-variable]
+     static const error_category &  errno_ecat     = generic_category();
+                                    ^
+C:\boost_1_62_0/boost/system/error_code.hpp:223:36: warning: 'boost::system::native_ecat' defined but not used [-Wunused-variable]
+     static const error_category &  native_ecat    = system_category();
+                                    ^
+In file included from C:\boost_1_62_0/boost/asio/detail/impl/win_tss_ptr.ipp:24:0,
+                 from C:\boost_1_62_0/boost/asio/detail/win_tss_ptr.hpp:76,
+                 from C:\boost_1_62_0/boost/asio/detail/tss_ptr.hpp:25,
+                 from C:\boost_1_62_0/boost/asio/detail/call_stack.hpp:20,
+                 from C:\boost_1_62_0/boost/asio/impl/handler_alloc_hook.ipp:19,
+                 from C:\boost_1_62_0/boost/asio/handler_alloc_hook.hpp:80,
+                 from C:\boost_1_62_0/boost/asio/detail/handler_alloc_helpers.hpp:21,
+                 from C:\boost_1_62_0/boost/asio/detail/bind_handler.hpp:19,
+                 from C:\boost_1_62_0/boost/asio/detail/wrapped_handler.hpp:18,
+                 from C:\boost_1_62_0/boost/asio/io_service.hpp:24,
+                 from C:\boost_1_62_0/boost/asio/basic_io_object.hpp:19,
+                 from C:\boost_1_62_0/boost/asio/basic_socket.hpp:20,
+                 from C:\boost_1_62_0/boost/asio/basic_datagram_socket.hpp:20,
+                 from C:\boost_1_62_0/boost/asio.hpp:21,
+                 from src\networklib.cpp:3:
+C:\boost_1_62_0/boost/asio/error.hpp:258:45: warning: 'boost::asio::error::system_category' defined but not used [-Wunused-variable]
+ static const boost::system::error_category& system_category
+                                             ^
+C:\boost_1_62_0/boost/asio/error.hpp:260:45: warning: 'boost::asio::error::netdb_category' defined but not used [-Wunused-variable]
+ static const boost::system::error_category& netdb_category
+                                             ^
+C:\boost_1_62_0/boost/asio/error.hpp:262:45: warning: 'boost::asio::error::addrinfo_category' defined but not used [-Wunused-variable]
+ static const boost::system::error_category& addrinfo_category
+                                             ^
+C:\boost_1_62_0/boost/asio/error.hpp:264:45: warning: 'boost::asio::error::misc_category' defined but not used [-Wunused-variable]
+ static const boost::system::error_category& misc_category
+                                             ^
+
+    "g++"  -ftemplate-depth-128 -std=c++14 -O3 -finline-functions -Wno-inline -Wall -pipe -mthreads  -DBOOST_SYSTEM_STATIC_LINK=1 -DNDEBUG  -I"C:\boost_1_62_0" -c -o "build\gcc-mingw-5.3.0\release\link-static\threading-multi\src\networklib.o" "src\networklib.cpp"
+
+...failed gcc.compile.c++ build\gcc-mingw-5.3.0\release\link-static\threading-multi\src\networklib.o...
+...skipped <pbuild\gcc-mingw-5.3.0\release\link-static\threading-multi>libNetworklib.a(clean) for lack of <pbuild\gcc-mingw-5.3.0\release\link-static\threading-multi>src\networklib.o...
+...skipped <pbuild\gcc-mingw-5.3.0\release\link-static\threading-multi>libNetworklib.a for lack of <pbuild\gcc-mingw-5.3.0\release\link-static\threading-multi>src\networklib.o...
+...skipped <pbuild\gcc-mingw-5.3.0\release\link-static\threading-multi>tool_Networklib.exe for lack of <pbuild\gcc-mingw-5.3.0\release\link-static\threading-multi>libNetworklib.a...
+...skipped <pbuild\bin>tool_Networklib.exe for lack of <pbuild\gcc-mingw-5.3.0\release\link-static\threading-multi>tool_Networklib.exe...
+...failed updating 1 target...
+...skipped 4 targets...
