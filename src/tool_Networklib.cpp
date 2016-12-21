@@ -1,4 +1,4 @@
-#include "MainFoo.h"
+#include "NETWORK.h"
 #include "networkres.h"
 #include <iostream>
 #include <memory>

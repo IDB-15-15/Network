@@ -38,22 +38,24 @@ NetworkRes http(std::string host, std::string page, bool* err) {
     if (ec == 0){
     	//std::cout<<"Get request on the way!";
         //std::string req="GET " + page + " HTTP/1.1\r\nHost: "+host+"\r\nAccept: *\r\nConnection: close\r\n\r\n";
-    	std::string req="GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
+        std::string req = "GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
             "\r\nUser-Agent: " + ::Network::browser_name + " (" + ::Network::platform + ", " + ::Network::shifr +
             ", ru)" + "\r\nAccept: text/html" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
 
         write(sock, buffer(req));
     	boost::asio::streambuf buff;
     	read_until(sock, buff , "\r\n\r\n");
+
     	std::istream str(&buff);
         std::string now;
         std::getline(str, now);
-        //std::regex reg("HTTP/1\.1[[:space:]]*([0-9]*)");
         std::regex reg ("HTTP/1\\.1[[:space:]]*([0-9]*)");
+
         auto str_begin = std::sregex_iterator(now.begin(), now.end(), reg);
         std::sregex_iterator i = str_begin;
         std::smatch match = *i;
         std::map<std::string, std::string> header;
+
         header["status_code"] = match[1];
         //std::cerr<<match[1]<<std::endl;
         reg = "([^:]*):[[:space:]](.*)";

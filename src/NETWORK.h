@@ -1,5 +1,5 @@
-#ifndef MAINFOO_H
-#define MAINFOO_H
+#ifndef NETWORK_H
+#define NETWORK_H
 
 #include <iostream>
 #include "locallib.h"
@@ -12,4 +12,4 @@ NetworkRes give_result(std::string address);
 
 }
 
-#endif // MAINFOO_H
+#endif // NETWORK_H
