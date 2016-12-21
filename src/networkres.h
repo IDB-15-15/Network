@@ -5,6 +5,7 @@
 #include <memory>
 #include <map>
 
+namespace Network{
 struct NetworkRes
 {
 	std::string site;
@@ -29,6 +30,6 @@ struct NetworkRes
 
     NetworkRes()=default;
 };
-
+}
 #include "networklibfoo.h"
 #endif // NETWORKRES_H

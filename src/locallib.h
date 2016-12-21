@@ -10,6 +10,8 @@
 
 #include "networkres.h"
 
+namespace Network{
 NetworkRes local(std::string local_url);
+}
 
 #endif // LOCALLIB_H

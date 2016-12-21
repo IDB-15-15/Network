@@ -7,6 +7,7 @@
 #include <utility>
 #include <memory>
 
+namespace Network{
 NetworkRes local(std::string local_url)
 {
     using namespace boost::interprocess;
@@ -33,4 +34,5 @@ NetworkRes local(std::string local_url)
     }
 
     return res;
+}
 }

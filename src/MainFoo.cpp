@@ -5,6 +5,7 @@
 #include "networklib.h"
 #include "networkres.h"
 
+namespace Network{
 NetworkRes starter(std::string address)
 {
 	std::smatch mymatches;
@@ -47,4 +48,5 @@ std::cerr<<adr;
 		res.site=adr;
 		return res;
 	}	
+}
 }

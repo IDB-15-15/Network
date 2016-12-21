@@ -8,6 +8,7 @@
 #include <stdlib.h>
 //#include <memory>
 
+namespace Network{
 const std::string browser_name="Suppa_Browser";
 const std::string platform="Linux";
 const std::string shifr="N";
@@ -38,7 +39,7 @@ NetworkRes http(std::string host, std::string page, bool* err)
     	//std::cout<<"Get request on the way!";
 		//std::string req="GET " + page + " HTTP/1.1\r\nHost: "+host+"\r\nAccept: *\r\nConnection: close\r\n\r\n";
     	std::string req="GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
-                    	"\r\nUser-Agent: " + ::browser_name + " (" + ::platform + ", " + ::shifr + ", ru)" +
+                        "\r\nUser-Agent: " + ::Network::browser_name + " (" + ::Network::platform + ", " + ::Network::shifr + ", ru)" +
                     	"\r\nAccept: text/html" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
 		write(sock, buffer(req));
     	boost::asio::streambuf buff;
@@ -79,7 +80,7 @@ NetworkRes http(std::string host, std::string page, bool* err)
 
 		if(header["status_code"]!="200")
 		{
-			std::string temp=::error_message_before+header["status_code"]+error_message_after;
+            std::string temp=::Network::error_message_before+header["status_code"]+error_message_after;
 			result.push_header(header);
 			const char* err_mess=temp.c_str();
 			result.push(err_mess);
@@ -191,4 +192,4 @@ NetworkRes get(std::string site)
 	return result;
 
 }
-
+}

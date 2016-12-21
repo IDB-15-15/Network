@@ -1,3 +1,4 @@
+namespace Network{
 inline int NetworkRes::get_error(){
     return error;
 };
@@ -29,4 +30,4 @@ inline void NetworkRes::push_header(std::map<std::string, std::string> heade){
 	header=heade;
 };
 
-
+}
