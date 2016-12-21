@@ -8,6 +8,7 @@
 #include <memory>
 
 namespace Network{
+
 NetworkRes local(std::string local_url)
 {
     using namespace boost::interprocess;
@@ -16,8 +17,8 @@ NetworkRes local(std::string local_url)
     std::shared_ptr<std::string> error_ptr;
 
     try{
-        file_mapping m_file(file_name, read_only);  //read file
-        mapped_region region(m_file, read_only);    //push it to region
+        file_mapping m_file (file_name, read_only);  //read file
+        mapped_region region (m_file, read_only);    //push it to region
 
         res.res_arr = (static_cast<const char *> (region.get_address()));   //save array's address
         res.size = region.get_size();                                       //save array's size
@@ -35,4 +36,5 @@ NetworkRes local(std::string local_url)
 
     return res;
 }
+
 }

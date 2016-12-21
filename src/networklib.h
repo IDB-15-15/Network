@@ -5,7 +5,9 @@
 #include "networkres.h"
 
 namespace Network{
+
 NetworkRes get(std::string site);
+
 }
 
 #endif // NETWORKLIB_H
