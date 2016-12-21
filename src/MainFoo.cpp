@@ -30,7 +30,8 @@ std::cerr<<adr;
 		res.site=address;
 		return res;
 	}
-	std::regex net ("(www\.(.)+)|((.)?\.[a-zA-Z]{1,4}(.)*)");
+	std::regex net ("(www\\.(.)+)|((.)?\\.[a-zA-Z]{1,4}(.)*)");
+	//std::regex net ("(www\.(.)+)|((.)?\.[a-zA-Z]{1,4}(.)*)");
 	std::regex_match(address, mymatches, net);
 	if(mymatches.size())
 	{

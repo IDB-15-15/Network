@@ -15,14 +15,11 @@ Performing configuration checks
 ...updating 5 targets...
 gcc.compile.c++ build\gcc-mingw-5.3.0\release\link-static\threading-multi\src\networklib.o
 src\networklib.cpp: In function 'NetworkRes http(std::__cxx11::string, std::__cxx11::string, bool*)':
-src\networklib.cpp:49:18: warning: unknown escape sequence: '\.'
-   std::regex reg("HTTP/1\.1[[:space:]]*([0-9]*)");
-                  ^
-src\networklib.cpp:99:13: error: 'strtoull' is not a member of 'std'
-    int size=std::strtoull(header.at("Content-length").c_str(), nullptr, 10);
-             ^
+src\networklib.cpp:100:72: error: 'strtoull' was not declared in this scope
+    int size = strtoull(header.at("Content-length").c_str(), nullptr, 10);
+                                                                        ^
 src\networklib.cpp: In function 'NetworkRes get(std::__cxx11::string)':
-src\networklib.cpp:171:20: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+src\networklib.cpp:172:20: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
      for (int i=8; i<site.length(); i++)
                     ^
 In file included from C:\boost_1_62_0/boost/asio/detail/throw_error.hpp:19:0,

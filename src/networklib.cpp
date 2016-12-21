@@ -5,7 +5,7 @@
 #include <regex>
 #include <boost/any.hpp>
 #include <string>
-#include <cstdlib>
+#include <stdlib.h>
 //#include <memory>
 
 const std::string browser_name="Suppa_Browser";
@@ -46,7 +46,8 @@ NetworkRes http(std::string host, std::string page, bool* err)
     	std::istream str(&buff);
 		std::string now;
 		std::getline(str, now);
-		std::regex reg("HTTP/1\.1[[:space:]]*([0-9]*)");
+		//std::regex reg("HTTP/1\.1[[:space:]]*([0-9]*)");
+		std::regex reg ("HTTP/1\\.1[[:space:]]*([0-9]*)"); 
 		auto str_begin=std::sregex_iterator(now.begin(), now.end(), reg);
 		std::sregex_iterator i = str_begin;
 		std::smatch match = *i;
@@ -96,7 +97,7 @@ NetworkRes http(std::string host, std::string page, bool* err)
 		//}
 		if (header.count("Content-Length")!=0)
 		{
-			int size=std::strtoull(header.at("Content-length").c_str(), nullptr, 10);
+			int size = strtoull(header.at("Content-length").c_str(), nullptr, 10);
 			boost::shared_ptr<char[]> body = boost::make_shared<char[]>(size);
 			size_t ostatok=0;
 	//std::cerr<<"Content-length est"<<std::endl;

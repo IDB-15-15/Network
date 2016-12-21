@@ -5,7 +5,7 @@
 #include <string>
 int main()
 {
- std::string site="file:///home/dima/some.txt";
+ std::string site="file://C:/Master/Network/src/locallib.cpp";
  NetworkRes res=starter(site);
  std::cout<<res.get_res_arr()<<std::endl;
 }
