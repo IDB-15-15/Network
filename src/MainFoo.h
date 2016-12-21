@@ -8,7 +8,7 @@
 
 namespace Network{
 
-NetworkRes starter(std::string address);
+NetworkRes give_result(std::string address);
 
 }
 

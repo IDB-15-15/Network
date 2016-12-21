@@ -7,7 +7,7 @@ int main()
     std::cout << "n = ";
     std::getline(std::cin, address);
 
-    Network::NetworkRes result = Network::local(address);
+    Network::NetworkRes result = Network::get_local_file(address);
     std::cout.write(result.res_arr, result.size);
 
     //"C:/Users/Nekit/Documents/Qt projects/untitled/networklib.h";

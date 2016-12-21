@@ -6,7 +6,7 @@
 
 namespace Network{
 
-NetworkRes get(std::string site);
+NetworkRes get_network_page(std::string site);
 
 }
 

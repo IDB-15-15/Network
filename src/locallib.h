@@ -12,7 +12,7 @@
 
 namespace Network{
 
-NetworkRes local(std::string local_url);
+NetworkRes get_local_file(std::string local_url);
 
 }
 

@@ -34,5 +34,6 @@ struct NetworkRes
 
 }
 
-#include "networklibfoo.h"
+#include "networkresfoo.h"
+
 #endif // NETWORKRES_H

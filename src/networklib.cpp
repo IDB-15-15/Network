@@ -83,7 +83,7 @@ NetworkRes http(std::string host, std::string page, bool* err) {
 
         if ((header["status_code"]=="300")||(header["status_code"]=="301")||(header["status_code"]=="302")||
                 (header["status_code"]=="303")||(header["status_code"]=="305")||(header["status_code"]=="307"))
-            return get(header["Location"]);
+            return get_network_page(header["Location"]);
 
         if (header["status_code"] != "200") {
             std::string temp = ::Network::error_message_before + header["status_code"] + error_message_after;
@@ -163,7 +163,7 @@ NetworkRes http(std::string host, std::string page, bool* err) {
     }                                //Здесь надо будет возвращать код ошибки
 }
 
-NetworkRes get(std::string site) {
+NetworkRes get_network_page(std::string site) {
     using namespace std;
     string page = "";
 
@@ -186,7 +186,7 @@ NetworkRes get(std::string site) {
 
     int pl = (int)sl;
     site.erase(pl, site.length() - 1);
-    NetworkRes result=http(site, page, &err);
+    NetworkRes result = http(site, page, &err);
 
     return result;
 }
