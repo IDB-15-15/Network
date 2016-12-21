@@ -6,6 +6,7 @@
 #include <boost/any.hpp>
 #include <string>
 #include <stdlib.h>
+#include <boost/lexical_cast.hpp>
 
 namespace Network{
 
@@ -101,7 +102,8 @@ NetworkRes http(std::string host, std::string page, bool* err) {
             //ostatok+=str.gcount();
         //}
         if (header.count("Content-Length") != 0) {
-            int size = strtoull(header.at("Content-length").c_str(), nullptr, 10);
+            int size = boost::lexical_cast<int>(header.at("Content-length"));
+            //int size = strtoull(header.at("Content-length").c_str(), nullptr, 10);
             boost::shared_ptr<char[]> body = boost::make_shared<char[]> (size);
             size_t ostatok = 0;
             //std::cerr<<"Content-length est"<<std::endl;
