@@ -90,15 +90,15 @@ NetworkRes http(std::string host, std::string page, bool* err) {
 
         if (header["status_code"] != "200") {
             std::string temp = ::Network::error_message_before + header["status_code"] + error_message_after;
-            result.push_header (header);
+            result.header = header;
             const char* err_mess = temp.c_str();
-            result.push (err_mess);
-            result.set_error (true);
+            result.res_arr = err_mess;
+            result.error = true;
         }
 
 	//std::cerr<<"Header is here!"<<std::endl;
 
-        result.push_header(header);
+        result.header = header;
 
         //while (str) {
             //str.read(body.get()+ostatok, 50);
@@ -121,8 +121,8 @@ NetworkRes http(std::string host, std::string page, bool* err) {
             boost::any res = body;
             body_ = body.get();
 		result.size=size;
-            result.push_any(res);
-            result.push(body_);
+            result.res = res;
+            result.res_arr = body_;
 
             return result;														//исправить на boost::any
         }
@@ -151,8 +151,8 @@ NetworkRes http(std::string host, std::string page, bool* err) {
             sock.close();
             boost::any res=body;
             body_=body.get()->data();
-            result.push_any(res);
-            result.push(body_);
+            result.res = res;
+            result.res_arr = body_;
 		result.size=vec.size();
 
             return result;
@@ -161,8 +161,8 @@ NetworkRes http(std::string host, std::string page, bool* err) {
     else {
         *err = true;
         boost::any res = ec.message();
-        result.push_any(res);
-        result.set_error(true);
+        result.res = res;
+        result.error = true;
 
         return result;
     }                                //Здесь надо будет возвращать код ошибки
