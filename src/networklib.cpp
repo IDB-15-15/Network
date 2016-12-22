@@ -7,6 +7,7 @@
 #include <string>
 #include <stdlib.h>
 #include <boost/lexical_cast.hpp>
+#include "NETWORK.h"
 
 namespace Network{
 
@@ -85,7 +86,7 @@ NetworkRes http(std::string host, std::string page, bool* err) {
 
         if ((header["status_code"]=="300")||(header["status_code"]=="301")||(header["status_code"]=="302")||
                 (header["status_code"]=="303")||(header["status_code"]=="305")||(header["status_code"]=="307"))
-            return get_network_page(header["Location"]);
+            return Network::give_result(header["Location"]);
 
         if (header["status_code"] != "200") {
             std::string temp = ::Network::error_message_before + header["status_code"] + error_message_after;
@@ -119,6 +120,7 @@ NetworkRes http(std::string host, std::string page, bool* err) {
             sock.close();
             boost::any res = body;
             body_ = body.get();
+		result.size=size;
             result.push_any(res);
             result.push(body_);
 
@@ -151,6 +153,7 @@ NetworkRes http(std::string host, std::string page, bool* err) {
             body_=body.get()->data();
             result.push_any(res);
             result.push(body_);
+		result.size=vec.size();
 
             return result;
         }
