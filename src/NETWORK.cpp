@@ -25,7 +25,6 @@ NetworkRes give_result(std::string address) {
     if (mymatches.size()) {
         std::string addr = address;
         addr.erase(0, 7);
-        std::cerr << addr;
         res = get_local_file(addr);
         res.site = address;
 
