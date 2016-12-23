@@ -29,7 +29,6 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
     ip::tcp::resolver::query query(host, port);
     ip::tcp::resolver::iterator iter = resolver.resolve( query);
     ip::tcp::endpoint ep = *iter;
-    //ip::tcp::endpoint ep(ip::address::from_string("46.105.108.63"), 80);
 
     ip::tcp::socket sock(service);
     sock.open(ip::tcp::v4());
@@ -37,17 +36,15 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
     sock.connect(ep, ec);
 
     if (ec == 0){
-    	//std::cout<<"Get request on the way!";
-        //std::string req="GET " + page + " HTTP/1.1\r\nHost: "+host+"\r\nAccept: *\r\nConnection: close\r\n\r\n";
         std::string req = "GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
             "\r\nUser-Agent: " + ::Network::browser_name + " (" + ::Network::platform + ", " + ::Network::shifr +
             ", ru)" + "\r\nAccept: text/html, image/jpeg, image/png" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
 
         write(sock, buffer(req));
-    	boost::asio::streambuf buff;
-    	read_until(sock, buff , "\r\n\r\n");
+        boost::asio::streambuf buff;
+        read_until(sock, buff , "\r\n\r\n");
 
-    	std::istream str(&buff);
+        std::istream str(&buff);
         std::string now;
         std::getline(str, now);
         std::regex reg ("HTTP/1\\.1[[:space:]]*([0-9]*)");
@@ -57,7 +54,7 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
         std::smatch match = *i;
         std::map<std::string, std::string> header;
         header["status_code"] = match[1];
-        //std::cerr<<match[1]<<std::endl;
+
         reg = "([^:]*):[[:space:]](.*)";
         std::sregex_iterator end;
         while(str) {
@@ -73,19 +70,16 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
                 break;
 
             match = *i;
-            //std::cerr<<now<<std::endl;
             header[match[1]] = match[2];
-            //std::cerr<<match[1]<<"      "<<match[2]<<std::endl;
         }
         str.clear();
-    	std::string st;
+        std::string st;
         boost::system::error_code error;
 
         if ((header["status_code"]=="300")||(header["status_code"]=="301")||(header["status_code"]=="302")||
                 (header["status_code"]=="303")||(header["status_code"]=="305")||(header["status_code"]=="307")){
-		std::cerr<<header["Location"]<<std::endl;
             return Network::give_result(header["Location"]);
-		}
+            }
 
         if (header["status_code"] != "200") {
             std::string temp = ::Network::error_message_before + header["status_code"] + error_message_after;
@@ -95,45 +89,36 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
             result.error = true;
         }
 
-	//std::cerr<<"Header is here!"<<std::endl;
+
 
         result.header = header;
-        //while (str) {
-            //str.read(body.get()+ostatok, 50);
-            //ostatok+=str.gcount();
-        //}
         if (header.count("Content-Length") != 0) {
             int size = boost::lexical_cast<int>(header.at("Content-Length"));
-            //int size = strtoull(header.at("Content-length").c_str(), nullptr, 10);
             boost::shared_ptr<char[]> body = boost::make_shared<char[]> (size);
             size_t ostatok = 0;
-            //std::cerr<<"Content-length est"<<std::endl;
             while (str) {
                 str.read (body.get() + ostatok, 50);
                 ostatok += str.gcount();
             }
             read (sock, buffer(body.get() + ostatok, size - ostatok), error);
-            sock.shutdown(ip::tcp::socket::shutdown_receive);
             sock.close();
             boost::any res = body;
             body_ = body.get();
-		result.size=size;
+            result.size=size;
             result.res = res;
             result.res_arr = body_;
-            return result;														//исправить на boost::any
+            return result;														
         }
         else {
             size_t readed = 1;
             std::vector<char> vec;
             size_t ostatok = 0;
-            //std::cerr<<"Net ego"<<std::endl;
             while (str) {
                 vec.resize (vec.size() + 50);
                 str.read (vec.data() + ostatok, 50);
                 ostatok += str.gcount();
                 vec.resize (vec.size() - 50 + str.gcount());
             }
-            //std::cerr<<"Ya chital"<<std::endl;
             boost::system::error_code erread;
 
             while(readed == 1) {
@@ -141,15 +126,13 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
                 readed = read (sock, buffer(vec.data() + ostatok, 1), transfer_exactly(1), erread);
                 ostatok += 1;
             }
-            //std::cerr<<"I vnov prodoljaetsya boy!"<<std::endl;
             boost::shared_ptr<std::vector<char>> body=boost::make_shared<std::vector<char>>(vec);
-            sock.shutdown(ip::tcp::socket::shutdown_receive);
             sock.close();
             boost::any res=body;
             body_=body.get()->data();
             result.res = res;
             result.res_arr = body_;
-		result.size=vec.size();
+            result.size=vec.size();
 
             return result;
         }
@@ -161,7 +144,7 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
         result.error = true;
 
         return result;
-    }                                //Здесь надо будет возвращать код ошибки
+    }                                
 }
 
 NetworkRes get_network_page(std::string site) {
@@ -171,14 +154,13 @@ NetworkRes get_network_page(std::string site) {
     bool right = true;
     bool err = false;
 
-	std::regex reg("(.)+:([0-9]{1,4})");
-	std::smatch m;
-	std::string port="80";
-	if (std::regex_match(site, m, reg)){
-		port = m.str(2);
-		site.erase((site.begin()+m.position(2))-1, site.end());
-//std::cerr<<site;
-	}
+    std::regex reg("(.)+:([0-9]{1,4})");
+    std::smatch m;
+    std::string port="80";
+    if (std::regex_match(site, m, reg)){
+        port = m.str(2);
+        site.erase((site.begin()+m.position(2))-1, site.end());
+    }
     for (int i = 8; i < site.length(); i++) {  //Проверяем на наличие адреса страницы
         if (site[i] == '/')
             right = false;
@@ -189,7 +171,6 @@ NetworkRes get_network_page(std::string site) {
     }
 
     site.erase(0, 7);
-//std::regex reg("(.)+");
 
     std::string::size_type sl = site.find('/');
     page = site.substr(sl);
