@@ -18,7 +18,7 @@ const std::string error_message_before="<!DOCTYPE HTML><html><head><title>Оши
 const std::string error_message_after=".</h1></center></body></html>"; 
 
 
-NetworkRes http(std::string host, std::string page, bool* err) {
+NetworkRes http(std::string host, std::string page, bool* err, std::string port) {
     using namespace boost::asio;
 
     char* body_;
@@ -26,7 +26,7 @@ NetworkRes http(std::string host, std::string page, bool* err) {
     io_service service;
 
     ip::tcp::resolver resolver(service);
-    ip::tcp::resolver::query query(host, "80");
+    ip::tcp::resolver::query query(host, port);
     ip::tcp::resolver::iterator iter = resolver.resolve( query);
     ip::tcp::endpoint ep = *iter;
     //ip::tcp::endpoint ep(ip::address::from_string("46.105.108.63"), 80);
@@ -85,8 +85,10 @@ NetworkRes http(std::string host, std::string page, bool* err) {
         boost::system::error_code error;
 
         if ((header["status_code"]=="300")||(header["status_code"]=="301")||(header["status_code"]=="302")||
-                (header["status_code"]=="303")||(header["status_code"]=="305")||(header["status_code"]=="307"))
+                (header["status_code"]=="303")||(header["status_code"]=="305")||(header["status_code"]=="307")){
+		std::cerr<<header["Location"]<<std::endl;
             return Network::give_result(header["Location"]);
+		}
 
         if (header["status_code"] != "200") {
             std::string temp = ::Network::error_message_before + header["status_code"] + error_message_after;
@@ -175,6 +177,14 @@ NetworkRes get_network_page(std::string site) {
     bool right = true;
     bool err = false;
 
+	std::regex reg("(.)+:([0-9]{1,4})");
+	std::smatch m;
+	std::string port="80";
+	if (std::regex_match(site, m, reg)){
+		port = m.str(2);
+		site.erase((site.begin()+m.position(2))-1, site.end());
+//std::cerr<<site;
+	}
     for (int i = 8; i < site.length(); i++) {  //Проверяем на наличие адреса страницы
         if (site[i] == '/')
             right = false;
@@ -185,13 +195,14 @@ NetworkRes get_network_page(std::string site) {
     }
 
     site.erase(0, 7);
+//std::regex reg("(.)+");
 
     std::string::size_type sl = site.find('/');
     page = site.substr(sl);
 
     int pl = (int)sl;
     site.erase(pl, site.length() - 1);
-    NetworkRes result = http(site, page, &err);
+    NetworkRes result = http(site, page, &err, port);
 
     return result;
 }
