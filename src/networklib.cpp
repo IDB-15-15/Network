@@ -41,7 +41,7 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
         //std::string req="GET " + page + " HTTP/1.1\r\nHost: "+host+"\r\nAccept: *\r\nConnection: close\r\n\r\n";
         std::string req = "GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
             "\r\nUser-Agent: " + ::Network::browser_name + " (" + ::Network::platform + ", " + ::Network::shifr +
-            ", ru)" + "\r\nAccept: text/html" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
+            ", ru)" + "\r\nAccept: text/html, image/jpeg, image/png" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
 
         write(sock, buffer(req));
     	boost::asio::streambuf buff;
@@ -56,12 +56,10 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
         std::sregex_iterator i = str_begin;
         std::smatch match = *i;
         std::map<std::string, std::string> header;
-
         header["status_code"] = match[1];
         //std::cerr<<match[1]<<std::endl;
         reg = "([^:]*):[[:space:]](.*)";
         std::sregex_iterator end;
-
         while(str) {
             std::getline(str, now);
 
@@ -79,7 +77,6 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
             header[match[1]] = match[2];
             //std::cerr<<match[1]<<"      "<<match[2]<<std::endl;
         }
-
         str.clear();
     	std::string st;
         boost::system::error_code error;
@@ -101,13 +98,12 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
 	//std::cerr<<"Header is here!"<<std::endl;
 
         result.header = header;
-
         //while (str) {
             //str.read(body.get()+ostatok, 50);
             //ostatok+=str.gcount();
         //}
         if (header.count("Content-Length") != 0) {
-            int size = boost::lexical_cast<int>(header.at("Content-length"));
+            int size = boost::lexical_cast<int>(header.at("Content-Length"));
             //int size = strtoull(header.at("Content-length").c_str(), nullptr, 10);
             boost::shared_ptr<char[]> body = boost::make_shared<char[]> (size);
             size_t ostatok = 0;
@@ -116,7 +112,6 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
                 str.read (body.get() + ostatok, 50);
                 ostatok += str.gcount();
             }
-
             read (sock, buffer(body.get() + ostatok, size - ostatok), error);
             sock.shutdown(ip::tcp::socket::shutdown_receive);
             sock.close();
@@ -125,7 +120,6 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
 		result.size=size;
             result.res = res;
             result.res_arr = body_;
-
             return result;														//исправить на boost::any
         }
         else {
