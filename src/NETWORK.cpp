@@ -59,6 +59,11 @@ NetworkRes give_result(std::string address) {
         }
     } catch(const std::exception &e){
            std::cerr<<"ALARM!!!"<<e.what()<<std::endl;
+           res.error = 1;
+           res.res_arr = "";
+           res.site=address;
+           res.res_arr="<html><head><title>Ошибка!</title></head><body><h1>Что-то пошло не так. Проверьте интернет-подключение и правильность ввода адреса страницы.</h1></body></html>";
+           return res;
     }
 }
 
