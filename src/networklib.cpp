@@ -14,8 +14,8 @@ namespace Network{
 const std::string browser_name="Suppa_Browser";
 const std::string platform="Linux";
 const std::string shifr="N";
-const std::string error_message_before="<!DOCTYPE HTML><html><head><title>Ошибка!</title></head><body><center><h1>Страница недоступна. Код ошибки ";
-const std::string error_message_after=".</h1></center></body></html>"; 
+const std::string error_message_before="<html><head><title>Ошибка!</title></head><body><h1>Страница недоступна. Код ошибки ";
+const std::string error_message_after=".</h1></body></html>"; 
 
 
 NetworkRes http(std::string host, std::string page, bool* err, std::string port) {
