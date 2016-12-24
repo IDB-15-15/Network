@@ -1,4 +1,4 @@
-#include "NETWORK.h"
+#include "network.h"
 #include <iostream>
 #include <regex>
 #include "locallib.h"
