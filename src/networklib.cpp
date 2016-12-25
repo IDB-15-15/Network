@@ -7,7 +7,7 @@
 #include <string>
 #include <stdlib.h>
 #include <boost/lexical_cast.hpp>
-#include "NETWORK.h"
+#include "network.h"
 
 namespace Network{
 
@@ -30,13 +30,14 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
     ip::tcp::resolver::iterator iter = resolver.resolve( query);
     ip::tcp::endpoint ep = *iter;
 
+
     ip::tcp::socket sock(service);
     sock.open(ip::tcp::v4());
     boost::system::error_code ec;
     sock.connect(ep, ec);
 
     if (ec == 0){
-        std::string req = "GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
+        std::string req = "GET " + page + " HTTP/1.0\r\n" + "Host: " + host +
             "\r\nUser-Agent: " + ::Network::browser_name + " (" + ::Network::platform + ", " + ::Network::shifr +
             ", ru)" + "\r\nAccept: text/html, image/jpeg, image/png" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
 
@@ -47,12 +48,12 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
         std::istream str(&buff);
         std::string now;
         std::getline(str, now);
-        std::regex reg ("HTTP/1\\.1[[:space:]]*([0-9]*)");
-
+        std::regex reg ("HTTP/1\\..[[:space:]]*([0-9]*)");
         auto str_begin = std::sregex_iterator(now.begin(), now.end(), reg);
         std::sregex_iterator i = str_begin;
         std::smatch match = *i;
         std::map<std::string, std::string> header;
+
         header["status_code"] = match[1];
 
         reg = "([^:]*):[[:space:]](.*)";
@@ -93,9 +94,11 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
 
         result.header = header;
         if (header.count("Content-Length") != 0) {
+
             int size = boost::lexical_cast<int>(header.at("Content-Length"));
             boost::shared_ptr<char[]> body = boost::make_shared<char[]> (size);
             size_t ostatok = 0;
+
             while (str) {
                 str.read (body.get() + ostatok, 50);
                 ostatok += str.gcount();
@@ -104,9 +107,11 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
             sock.close();
             boost::any res = body;
             body_ = body.get();
+
             result.size=size;
             result.res = res;
             result.res_arr = body_;
+
             return result;														
         }
         else {
@@ -177,6 +182,7 @@ NetworkRes get_network_page(std::string site) {
 
     int pl = (int)sl;
     site.erase(pl, site.length() - 1);
+
     NetworkRes result = http(site, page, &err, port);
 
     return result;

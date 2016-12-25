@@ -1,4 +1,4 @@
-#include "NETWORK.h"
+#include "network.h"
 #include "networkres.h"
 #include <iostream>
 #include <memory>
