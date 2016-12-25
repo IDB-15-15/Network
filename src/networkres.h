@@ -13,7 +13,7 @@ struct NetworkRes
     boost::any res;         //result - array
     const char *res_arr;    //array's address
     std::size_t size;       //array's size
-    int error = 0;
+    bool error = false;
     int mode = 0;
     std::map<std::string, std::string> header;
 

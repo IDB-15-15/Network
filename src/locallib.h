@@ -12,9 +12,9 @@
 
 namespace Network{
 
-NetworkRes get_local_file(std::string local_url);
-//bool path(char* p);
-//NetworkRes directory(std::string path);
+NetworkRes get_local_file (std::string local_url);
+bool path (std::string p);
+std::string directory (std::string path);
   
 }
 
