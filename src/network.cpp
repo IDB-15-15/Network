@@ -25,9 +25,10 @@ NetworkRes give_result(std::string address) {
 
         std::regex_match(address, mymatches, https);
         if (mymatches.size()) {
-            res.res_arr="<html><head><title>Ошибка!</title></head><body><h1>Требуемый протокол HTTPS не поддерживается.</h1></body></html>";
-            res.size=113;
-            res.site=address;
+            res = get_network_page(address);
+            res.site = address;
+
+            return res;
         }
 
 
@@ -50,7 +51,15 @@ NetworkRes give_result(std::string address) {
 
             return res;
         }
-        else {
+        else if (mymatches.size()) {
+            std::string addr = "https://" + address;
+            res = get_network_page(addr);
+            res.site = addr;
+
+            return res;
+        }
+        else
+		{
             std::string addr="file://" + address;
             res = get_local_file(address);
             res.site = addr;
