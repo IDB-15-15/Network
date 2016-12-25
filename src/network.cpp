@@ -25,9 +25,9 @@ NetworkRes give_result(std::string address) {
 
         std::regex_match(address, mymatches, https);
         if (mymatches.size()) {
-            res.res_arr="<html><head><title>Ошибка!</title></head><body><h1>Требуемый протокол HTTPS не поддерживается.</h1></body></html>";
-            res.size=113;
-            res.site=address;
+            res.res_arr = "<html><head><title>Ошибка!</title></head><body><h1>Требуемый протокол HTTPS не поддерживается.</h1></body></html>";
+            res.size = 113;
+            res.site = address;
         }
 
 
@@ -51,18 +51,18 @@ NetworkRes give_result(std::string address) {
             return res;
         }
         else {
-            std::string addr="file://" + address;
+            std::string addr = "file://" + address;
             res = get_local_file(address);
             res.site = addr;
 
             return res;
         }
     } catch(const std::exception &e){
-           std::cerr<<"ALARM!!!"<<e.what()<<std::endl;
+           std::cerr << "ALARM!!! " << e.what() << std::endl;
            res.error = 1;
            res.res_arr = "";
-           res.site=address;
-           res.res_arr="<html><head><title>Ошибка!</title></head><body><h1>Что-то пошло не так. Проверьте интернет-подключение и правильность ввода адреса страницы.</h1></body></html>";
+           res.site = address;
+           res.res_arr = "<html><head><title>Ошибка!</title></head><body><h1>Что-то пошло не так. Проверьте интернет-подключение и правильность ввода адреса страницы.</h1></body></html>";
            return res;
     }
 }
