@@ -28,6 +28,7 @@ NetworkRes give_result(std::string address) {
             res.res_arr = "<html><head><title>Ошибка!</title></head><body><h1>Требуемый протокол HTTPS не поддерживается.</h1></body></html>";
             res.size = 113;
             res.site = address;
+            res.error = true;
         }
 
 

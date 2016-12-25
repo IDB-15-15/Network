@@ -23,6 +23,7 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
 
     char* body_;
     NetworkRes result;
+    result.error;
     io_service service;
 
     ip::tcp::resolver resolver(service);
@@ -104,6 +105,7 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
                 ostatok += str.gcount();
             }
             read (sock, buffer(body.get() + ostatok, size - ostatok), error);
+            if (error) result.error=true;
             sock.close();
             boost::any res = body;
             body_ = body.get();
@@ -130,6 +132,7 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
                 vec.resize (vec.size() + 1);
                 readed = read (sock, buffer(vec.data() + ostatok, 1), transfer_exactly(1), erread);
                 ostatok += 1;
+                if (erread) result.error = true;
             }
             boost::shared_ptr<std::vector<char>> body=boost::make_shared<std::vector<char>>(vec);
             sock.close();
