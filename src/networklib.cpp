@@ -157,13 +157,13 @@ NetworkRes https(std::string host, std::string page, bool* err, std::string port
 
     ip::tcp::resolver resolver(service);
     ip::tcp::resolver::query query(host, port);
-    ip::tcp::resolver::iterator iter = resolver.resolve( query);
+    ip::tcp::resolver::iterator iter = resolver.resolve(query);
     ip::tcp::endpoint ep = *iter;
 
     ssl::context ctx(boost::asio::ssl::context::sslv23);
     ctx.load_verify_file("ca.pem");
 
-    client c(io_service, ctx, iterator);
+    client c(service, ctx, iter);
 
     io_service.run();
 
