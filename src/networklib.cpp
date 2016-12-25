@@ -165,7 +165,7 @@ NetworkRes https(std::string host, std::string page, bool* err, std::string port
 
     client c(service, ctx, iter);
 
-    io_service.run();
+    service.run();
 
 //    catch (std::exception& e)
 //    {
