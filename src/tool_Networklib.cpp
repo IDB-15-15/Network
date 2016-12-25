@@ -13,6 +13,6 @@ int main(int argc, char **argv) {
 		auto res=Network::give_result(site);
 		std::cout<<res.res_arr;
 	} catch(std::exception &e) {
-		std::cerr<<"ALARM!!!"<<e.what()<<std::endl;
+		std::cerr<<"ALARM!!! "<<e.what()<<std::endl;
 		}
 }
