@@ -60,6 +60,7 @@ NetworkRes get_local_file(std::string local_url)
     using namespace boost::interprocess;
     const char *file_name = local_url.c_str();
     NetworkRes res;
+    std::shared_ptr<std::string> error_ptr;
     bool check;
    check=path(file_name);
    if(!check){
@@ -71,7 +72,7 @@ NetworkRes get_local_file(std::string local_url)
        res.res_arr = error_ptr->c_str();
         return res;
    }
-    std::shared_ptr<std::string> error_ptr;
+   
 
     try{
         file_mapping m_file (file_name, read_only);  //read file
