@@ -93,7 +93,7 @@ NetworkRes get_local_file(std::string local_url)
 
     if (!check) {
         error_ptr = std::make_shared<std::string>                           //create error's message
-            "<html><title>Error</title><body>ERORR! WRONG PATH!!!</body></html>");
+            ("<html><title>Error</title><body>ERORR! WRONG PATH!!!</body></html>");
         res.res = error_ptr;                //save error's message
         res.size = error_ptr->size();       //save error's message size
         res.res_arr = error_ptr->c_str();
