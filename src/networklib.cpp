@@ -11,11 +11,11 @@
 
 namespace Network{
 
-const std::string browser_name="Suppa_Browser";
-const std::string platform="Linux";
-const std::string shifr="N";
-const std::string error_message_before="<html><head><title>Ошибка!</title></head><body><h1>Страница недоступна. Код ошибки ";
-const std::string error_message_after=".</h1></body></html>"; 
+const std::string browser_name = "Suppa_Browser";
+const std::string platform = "Linux";
+const std::string shifr = "N";
+const std::string error_message_before = "<html><head><title>Ошибка!</title></head><body><h1>Страница недоступна. Код ошибки ";
+const std::string error_message_after = ".</h1></body></html>"; 
 
 
 NetworkRes http(std::string host, std::string page, bool* err, std::string port) {
@@ -77,8 +77,8 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
         std::string st;
         boost::system::error_code error;
 
-        if ((header["status_code"]=="300")||(header["status_code"]=="301")||(header["status_code"]=="302")||
-                (header["status_code"]=="303")||(header["status_code"]=="305")||(header["status_code"]=="307")){
+        if ((header["status_code"] == "300")||(header["status_code"] == "301")||(header["status_code"] == "302")||
+                (header["status_code"] == "303")||(header["status_code"] == "305")||(header["status_code"] == "307")){
             return Network::give_result(header["Location"]);
             }
 
@@ -108,7 +108,7 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
             boost::any res = body;
             body_ = body.get();
 
-            result.size=size;
+            result.size = size;
             result.res = res;
             result.res_arr = body_;
 
@@ -133,11 +133,11 @@ NetworkRes http(std::string host, std::string page, bool* err, std::string port)
             }
             boost::shared_ptr<std::vector<char>> body=boost::make_shared<std::vector<char>>(vec);
             sock.close();
-            boost::any res=body;
+            boost::any res = body;
             body_=body.get()->data();
             result.res = res;
             result.res_arr = body_;
-            result.size=vec.size();
+            result.size = vec.size();
 
             return result;
         }
@@ -161,10 +161,10 @@ NetworkRes get_network_page(std::string site) {
 
     std::regex reg("(.)+:([0-9]{1,4})");
     std::smatch m;
-    std::string port="80";
+    std::string port = "80";
     if (std::regex_match(site, m, reg)){
         port = m.str(2);
-        site.erase((site.begin()+m.position(2))-1, site.end());
+        site.erase((site.begin() + m.position(2))-1, site.end());
     }
     for (int i = 8; i < site.length(); i++) {  //Проверяем на наличие адреса страницы
         if (site[i] == '/')
