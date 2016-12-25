@@ -11,7 +11,8 @@
 #include <memory>
 
 namespace Network{
-bool path(char* p)
+/*
+bool path(const char* p)
 {
     boost::system::error_code code1 = make_error_code(
                 boost::system::errc::no_such_file_or_directory);
@@ -36,7 +37,7 @@ bool path(char* p)
     // сама проверка
     try                                    // в каноникал поступает файл
     {
-        std::string file=p;
+        std::string file = p;
         boost::filesystem::canonical(file);
     }
     catch(boost::filesystem::filesystem_error& error)        // выдает 0 если ошибка
@@ -53,46 +54,47 @@ bool path(char* p)
         }
     }
     return true;
-}
+}*/
 
 NetworkRes get_local_file(std::string local_url)
 {
     using namespace boost::interprocess;
     const char *file_name = local_url.c_str();
     NetworkRes res;
-    std::shared_ptr<std::string> error_ptr;
-    bool check;
-   check=path(file_name);
-   if(!check){
-       error_ptr = std::make_shared<std::string>                           //create error's message
+    std::shared_ptr<std::string> error_ptr;	
+    /*bool check;
+    check = path(file_name);
+	
+    if(!check){
+		error_ptr = std::make_shared<std::string>              //create error's message
                ("<html><title>Error</title><body>ERROR! PATH IS NOT CANONICAL</body></html>");
 
-       res.res = error_ptr;                //save error's message
-       res.size = error_ptr->size();       //save error's message size
-       res.res_arr = error_ptr->c_str();
-        return res;
-   }
-   
+		res.res = error_ptr;                //save error's message
+		res.size = error_ptr->size();       //save error's message size
+		res.res_arr = error_ptr->c_str();
+	}
+    else{ */
+		try{
+			file_mapping m_file (file_name, read_only);  //read file
+			mapped_region region (m_file, read_only);    //push it to region
 
-    try{
-        file_mapping m_file (file_name, read_only);  //read file
-        mapped_region region (m_file, read_only);    //push it to region
+			res.res_arr = (static_cast<const char *> (region.get_address()));   //save array's address
+			res.size = region.get_size();                                       //save array's size
+			res.res = std::make_shared<std::pair<file_mapping, mapped_region>>
+					(std::move (m_file), std::move (region));                   //save array
+		}
+		catch(interprocess_exception &e){
+			error_ptr = std::make_shared<std::string>                           //create error's message
+					("<html><title>Error</title><body>" + static_cast<std::string> (e.what()) + "</body></html>");
 
-        res.res_arr = (static_cast<const char *> (region.get_address()));   //save array's address
-        res.size = region.get_size();                                       //save array's size
-        res.res = std::make_shared<std::pair<file_mapping, mapped_region>>
-                (std::move (m_file), std::move (region));                   //save array
-    }
-    catch(interprocess_exception &e){
-        error_ptr = std::make_shared<std::string>                           //create error's message
-                ("<html><title>Error</title><body>" + static_cast<std::string> (e.what()) + "</body></html>");
-
-        res.res = error_ptr;                //save error's message
-        res.size = error_ptr->size();       //save error's message size
-        res.res_arr = error_ptr->c_str();   //save error's message address
-    }
+			res.res = error_ptr;                //save error's message
+			res.size = error_ptr->size();       //save error's message size
+			res.res_arr = error_ptr->c_str();   //save error's message address
+		}
+	//}
 
     return res;
 }
 
 }
+
