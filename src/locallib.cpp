@@ -11,7 +11,7 @@
 #include <memory>
 
 namespace Network{
-/*
+
 bool path(const char* p)
 {
     boost::system::error_code code1 = make_error_code(
@@ -54,7 +54,7 @@ bool path(const char* p)
         }
     }
     return true;
-}*/
+}
 
 NetworkRes get_local_file(std::string local_url)
 {
@@ -62,7 +62,7 @@ NetworkRes get_local_file(std::string local_url)
     const char *file_name = local_url.c_str();
     NetworkRes res;
     std::shared_ptr<std::string> error_ptr;	
-    /*
+    
     bool check;
     check = path(file_name);
 	
@@ -74,7 +74,7 @@ NetworkRes get_local_file(std::string local_url)
         res.size = error_ptr->size();       //save error's message size
         res.res_arr = error_ptr->c_str();
     }
-    else{*/
+    else{
         try{
             file_mapping m_file (file_name, read_only);  //read file
             mapped_region region (m_file, read_only);    //push it to region
@@ -92,7 +92,7 @@ NetworkRes get_local_file(std::string local_url)
             res.size = error_ptr->size();       //save error's message size
             res.res_arr = error_ptr->c_str();   //save error's message address
         }
-    //}
+    }
 
     return res;
 }
