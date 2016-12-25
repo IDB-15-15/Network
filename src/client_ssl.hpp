@@ -16,7 +16,7 @@ public:
       boost::asio::ip::tcp::resolver::iterator endpoint_iterator)
     : socket_(io_service, context)
   {
-    socket_.set_verify_mode(boost::asio::ssl::verify_peer);
+    socket_.set_verify_mode(boost::asio::ssl::verify_none);
     socket_.set_verify_callback(
         boost::bind(&client::verify_certificate, this, _1, _2));
 

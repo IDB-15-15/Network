@@ -2,12 +2,15 @@
 # Получаем путь до boost и подключаем его к своему проекту
 import os ;
 BOOST_ROOT = [ os.environ BOOST_ROOT ] ;
+OPENSSL_LIB = [ os.environ OPENSSL_LIB ] ;
+OPENSSL_ROOT = [ os.environ OPENSSL_ROOT ] ;
+#use-project openssl : $(OPENSSL_ROOT) ;
 use-project boost : $(BOOST_ROOT) ;
 
 project NetworkLib
 	:
 		# Конкретизируем параметры сборки; линковка статическая, чтобы не париться
-		requirements <link>static <threading>multi <include>$(BOOST_ROOT)
+		requirements <link>static <threading>multi <include>$(BOOST_ROOT) <include>$(OPENSSL_ROOT)
 	: default-build release
 	: build-dir build
 	;
@@ -25,12 +28,17 @@ else
 	alias another-libs ;
 }
 
+lib ssl : : <name>ssl ;
+lib crypto : : <name>crypto ;
+lib dl : : <name>dl ;
+
+
 # Основная библиотека
 lib Networklib
 	:
 		# Исходники текущего проекта (кроме tool_* и test_*)
 		[ glob-tree *.cpp *.hpp *.ui : test_* tool_* ]
-	 /boost/system another-libs 
+	 /boost/system another-libs $(OPENSSL_LIB) ssl crypto dl
 		
 	: <link>static
 	: <variant>release

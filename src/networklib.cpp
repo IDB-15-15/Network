@@ -178,7 +178,7 @@ NetworkRes https(std::string host, std::string page, bool* err, std::string port
     sock.connect(ep, ec);
 
     if (ec == 0){
-        std::string req = "GET " + page + " HTTP/1.1\r\n" + "Host: " + host +
+        std::string req = "GET " + page + " HTTP/1.0\r\n" + "Host: " + host +
             "\r\nUser-Agent: " + ::Network::browser_name + " (" + ::Network::platform + ", " + ::Network::shifr +
             ", ru)" + "\r\nAccept: text/html, image/jpeg, image/png" + "\r\nContent-Length: 0\r\n" + "Connection: close\r\n\r\n";
 
@@ -189,7 +189,7 @@ NetworkRes https(std::string host, std::string page, bool* err, std::string port
         std::istream str(&buff);
         std::string now;
         std::getline(str, now);
-        std::regex reg ("HTTP/1\\.1[[:space:]]*([0-9]*)");
+        std::regex reg ("HTTP/1\\..[[:space:]]*([0-9]*)");
 
         auto str_begin = std::sregex_iterator(now.begin(), now.end(), reg);
         std::sregex_iterator i = str_begin;
@@ -312,14 +312,14 @@ NetworkRes get_network_page(std::string site) {
         site += "/";
     }
 
-    site.erase(0, 7);
+    site.erase(0, 8);
 
     std::string::size_type sl = site.find('/');
     page = site.substr(sl);
 
     int pl = (int)sl;
     site.erase(pl, site.length() - 1);
-    NetworkRes result = http(site, page, &err, port);
+    NetworkRes result = https(site, page, &err, port);
 
     return result;
 }
